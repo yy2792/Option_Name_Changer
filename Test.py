@@ -14,7 +14,7 @@ test_example = ["PUT - QQQ 100 @ 168 EXP 06/15/2018",
 "100 @ QQQ 6/17 EXP P",
 "100 @ 1/2 QQQ 2018/05/07 C",
 "DEUTSCHE POST 02-Dec-2018 3600C",
-"DEUTSCHE POST DEC-02-2018 3500 1/2 C"]
+"DEUTSCHE POST DEC-02-2018 3500 1/2 c"]
 
 for i in test_example:
     print(i)

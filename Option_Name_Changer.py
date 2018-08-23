@@ -48,7 +48,10 @@ class option_name_changer:
                     else: 
                         datestr = res[0]
                         if len(re.split(r'[-\./]', datestr)[0]) == 4:
-                            year, month, day = re.split(r'[-\./]', datestr)
+                            if flag == 1:
+                                year, month, day = re.split(r'[-\./]', datestr)
+                            elif flag == 0:
+                                year, day, month = re.split(r'[-\./]', datestr)
                         else:
                             if flag == 1:
                                 month, day, year = re.split(r'[-\./]', datestr)
@@ -174,7 +177,7 @@ class option_name_changer:
                 elif optype.upper() == "CALL":
                     optype = "C"
 
-                return optype
+                return optype.upper()
 
             except ValueError:
                 pass

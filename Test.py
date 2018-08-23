@@ -10,7 +10,9 @@ test_example = ["PUT - QQQ 100 @ 168 EXP 06/15/2018",
 "DEUTSCHE POST JUL 18 31P",
 "PUT - HD 100 @185 1/2 EXP 05/18/2018",
 "PUT - QQQ 100 @ 06/18 EXP 100",
-"PUT - QQQ 100 @ 6/18 EXP 100 1/2"]
+"PUT - QQQ 100 @ 6/18 EXP 100 1/2",
+"100 @ QQQ 6/17 EXP P",
+"100 @ 1/2 QQQ 2018/05/07 C"]
 
 
 for i in test_example:

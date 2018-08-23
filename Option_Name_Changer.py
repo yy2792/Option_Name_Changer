@@ -178,7 +178,7 @@ class option_name_changer:
                 #clean all the date
                 res = cls.erase_date(optname)
 
-                reg_ex = re.compile(r'(?<=[^0-9])(\d+\.*\d*)(?![0-9])',re.IGNORECASE)
+                reg_ex = re.compile(r'(\d+\.*\d*)',re.IGNORECASE)
                 res = reg_ex.findall(res)
 
                 if len(res) == 0:
@@ -239,7 +239,7 @@ class option_name_changer:
                         if len(fract)>1:
                             raise ValueError
                         else:
-                            return cls.convert_to_float(fract[0])
+                            return str(round(cls.convert_to_float(fract[0]),4))
                     else:
                         return False
             except ValueError:

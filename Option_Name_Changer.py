@@ -261,7 +261,7 @@ class option_name_changer:
 
                 for key in cls.month_dict:
                         if re.search(key + r'\s*[-\./]*\d*(?![0-9])', res, flags=re.IGNORECASE):
-                            res = re.sub(key + r'\s*[-\./]\d*(?![0-9])', "", res, flags=re.IGNORECASE)
+                            res = re.sub(key + r'\s*[-\./]*\d*(?![0-9])', "", res, flags=re.IGNORECASE)
                 # if optname contains date, no need to check further, we assume there is only one date
                 if len(res) < len(optname):
                     return res

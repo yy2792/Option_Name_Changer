@@ -63,10 +63,11 @@ class option_name_changer:
                             year = "20" + year
 
                         return month + "/" + day + "/" + year
-
+				
+				#this part takes care of the situation like June 18
                 else:
                     for key in cls.month_dict:
-                        reg_ex = re.compile(key + r'\s*\d*(?![0-9])',re.IGNORECASE)
+                        reg_ex = re.compile(key + r'\s*[-\./]*\d*(?![0-9])',re.IGNORECASE)
                         res = reg_ex.findall(optname)
                         if len(res)==0:
                             continue
@@ -103,6 +104,10 @@ class option_name_changer:
 
                         return datedum.strftime("%m/%d/%Y")
                 
+				
+				
+				
+				
                 #does the string contain 07/09 or 7/9 ...
                 if re.search(r'\d+[-\./]\d+', optname, flags=re.IGNORECASE):
                     #if the fraction comes from a strike
@@ -255,8 +260,8 @@ class option_name_changer:
                     return res
 
                 for key in cls.month_dict:
-                        if re.search(key + r'\s*\d*(?![0-9])', res, flags=re.IGNORECASE):
-                            res = re.sub(key + r'\s*\d*(?![0-9])', "", res, flags=re.IGNORECASE)
+                        if re.search(key + r'\s*[-\./]*\d*(?![0-9])', res, flags=re.IGNORECASE):
+                            res = re.sub(key + r'\s*[-\./]\d*(?![0-9])', "", res, flags=re.IGNORECASE)
                 # if optname contains date, no need to check further, we assume there is only one date
                 if len(res) < len(optname):
                     return res

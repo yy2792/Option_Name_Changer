@@ -64,7 +64,12 @@ class option_name_changer:
 
                         return month + "/" + day + "/" + year
 				
-				#this part takes care of the situation like June 18
+		#this part takes care of the situation like Dec-02-2018 and 
+                elif cls.replace_month(optname):
+                    ff, optname2 = cls.replace_month(optname)
+                    return cls.find_date(optname2, ff)
+
+                #this part takes care of the situation like June 18
                 else:
                     for key in cls.month_dict:
                         reg_ex = re.compile(key + r'\s*[-\./]*\d*(?![0-9])',re.IGNORECASE)
@@ -103,9 +108,7 @@ class option_name_changer:
                         datedum = cls.find_thirdFri(int(year), int(month), 1)
 
                         return datedum.strftime("%m/%d/%Y")
-                
-				
-				
+                			
 				
 				
                 #does the string contain 07/09 or 7/9 ...
@@ -249,6 +252,52 @@ class option_name_changer:
                         return False
             except ValueError:
                 return False
+        
+        # this function deals with 02-Dec-2018, Dec-02-18, 18-Dec-02
+        @classmethod
+        def replace_month(cls, optname):
+            try:
+                for key in cls.month_dict:
+                    indxm = [m.span() for m in re.finditer(r'\d+[-\./]' + key + '[-\./]\d+', optname, flags=re.IGNORECASE)]
+                    
+                    if len(indxm) == 0:
+                        continue
+
+                    if len(indxm) > 1:
+                        raise ValueError("Too many dates")
+
+                    tempstr = [m.group() for m in re.finditer(r'\d+[-\./]' + key + '[-\./]\d+', optname, flags=re.IGNORECASE)][0]
+                    tstart, tend = indxm[0]
+
+                    #replace the key
+                    tempstr2 = re.sub(key, str(cls.month_dict[key]), tempstr, flags = re.IGNORECASE)
+
+                    output = optname[:tstart] + tempstr2 + optname[tend:]
+                    return 0, output
+
+                for key in cls.month_dict:
+                    indxm = [m.span() for m in re.finditer(key + r'[-\./]\d+[-\./]\d+', optname, flags=re.IGNORECASE)]
+                    
+                    if len(indxm) == 0:
+                        continue
+
+                    if len(indxm) > 1:
+                        raise ValueError("Too many dates")
+
+                    tempstr = [m.group() for m in re.finditer(key + r'[-\./]\d+[-\./]\d+', optname, flags=re.IGNORECASE)][0]
+                    tstart, tend = indxm[0]
+
+                    #replace the key
+                    tempstr2 = re.sub(key, str(cls.month_dict[key]), tempstr, flags = re.IGNORECASE)
+
+                    output = optname[:tstart] + tempstr2 + optname[tend:]
+                    return 1, output
+
+            except ValueError:
+                pass
+            return False
+
+
 
         @classmethod
         def erase_date(cls, optname):
@@ -258,6 +307,11 @@ class option_name_changer:
                 # if optname contains date, no need to check further, we assume there is only one date
                 if len(res) < len(optname):
                     return res
+                
+                # if optname contains Dec-02-2018 or 02-Dec-18
+                if cls.replace_month(optname):
+                    ff, optname2 = cls.replace_month(optname)
+                    return cls.erase_date(optname2)
 
                 for key in cls.month_dict:
                         if re.search(key + r'\s*[-\./]*\d*(?![0-9])', res, flags=re.IGNORECASE):
